@@ -2,11 +2,14 @@ import "./App.css";
 import React, { useState, useEffect } from "react";
 import {printTime, timeElapsed} from "./utils/printTime";
 import LapRow  from './components/LapRow'
+import LapTimer from "./components/LapTimer";
 
 function App() {
+  
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [lapTimes, setLapTimes] = useState([]);
+
   const [timer, setTimer] = useState({
     startTime: 0,
     totalTime: 0,
@@ -61,7 +64,7 @@ function App() {
           totalTime: timeElapsed(prevState.startTime),
           currentLapTime: timeElapsed(prevState.currentLapStart),
         }));
-      }, 100);
+      }, 16.6);
 
       return () => {
         clearInterval(timerID);
@@ -99,10 +102,7 @@ function App() {
       <div className="bottom">
         <table>
           <tbody>
-            <tr>
-              <td>Lap {!lapTimes.length ? 1 : lapTimes.length + 1}</td>
-              <td>{printTime(timer.currentLapTime)}</td>
-            </tr>
+            {timer.startTime ? <LapTimer timer={timer} lapTimes={lapTimes}/>: null}
             <LapRow lapTimes={lapTimes}/>
           </tbody>
         </table>
