@@ -1,46 +1,32 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-
-const convertTimeToString = (time) => {
-  const seconds = Math.floor((time / 1000) % 60);
-  const minutes = Math.floor((time / (1000 * 60)) % 60);
-  const hundredths = Math.floor((time / 10) % 100);
-
-  const padNumber = (number) => number.toString().padStart(2, "0");
-  return `${padNumber(minutes)}:${padNumber(seconds)}.${padNumber(hundredths)}`;
-};
+import {printTime, timeElapsed} from "./utils/printTime";
+import LapRow  from './components/LapRow'
 
 function App() {
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [lapTimes, setLapTimes] = useState([]);
   const [timer, setTimer] = useState({
     startTime: 0,
     totalTime: 0,
-    currentLapTime: 0,
+    currentLapStart: 0,
+    currentLapTime: 0
   });
-  const [lapTimes, setLapTimes] = useState([]);
-
-  const timeElapsed = (time) => {
-    return Date.now() - time;
-  };
 
   const start = () => {
     setIsRunning(true);
     if (isPaused) {
-      setTimer({ ...timer, startTime: Date.now() - timer.totalTime, currentLapTime: Date.now() - timer.currentLapTime});
+      setTimer({ ...timer, startTime: Date.now() - timer.totalTime, currentLapStart: Date.now() - timer.currentLapTime});
       setIsPaused(false);
     } else {
-      setTimer({ ...timer, startTime: Date.now(), currentLapTime: Date.now()});
+      setTimer({ ...timer, startTime: Date.now(), currentLapStart: Date.now()});
     }
   };
 
   const stop = () => {
     setIsRunning(false);
     setIsPaused(true);
-    // setTimer({
-    //   ...timer,
-    //   pauseTime: Date.now(),
-    // });
   };
 
   const reset = () => {
@@ -49,40 +35,45 @@ function App() {
       ...timer,
       startTime: 0,
       totalTime: 0,
-      currentLapTime: 0,
+      currentLapStart: 0,
+      currentLapTime: 0
     });
     const emptyLapsArray = [];
     setLapTimes(emptyLapsArray) 
   };
 
   const lap = () => {
-    const currentLap = timer.currentLapTime;
-    setLapTimes(() => [...lapTimes, currentLap])
-    setTimer({...timer, currentLapTime: 0})
+    if (isRunning) {
+      const currentLap = timer.currentLapTime;
+      const newLapTimes = lapTimes;
+      newLapTimes.unshift(currentLap)
+      setLapTimes([...newLapTimes])
+      setTimer((prevState) => ({ ...prevState, currentLapStart: Date.now(), currentLapTime: 0 }))
+      
+    }  
   };
 
   useEffect(() => {
     if (isRunning) {
       const timerID = setInterval(() => {
-        setTimer({
-          ...timer,
-          totalTime: timeElapsed(timer.startTime),
-          currentLapTime: timeElapsed(timer.currentLapTime),
-        });
-      }, 10);
+        setTimer((prevState) => ({
+          ...prevState,
+          totalTime: timeElapsed(prevState.startTime),
+          currentLapTime: timeElapsed(prevState.currentLapStart),
+        }));
+      }, 100);
 
       return () => {
         clearInterval(timerID);
       };
     }
-
   }, [isRunning]);
 
   return (
     <div className="App">
       <div className="top">
         <div className="digits">
-          <p>{convertTimeToString(timer.totalTime)}</p>
+          <p>{printTime(timer.totalTime)}</p>
         </div>
         <div className="buttons">
           {isPaused ? (
@@ -109,9 +100,10 @@ function App() {
         <table>
           <tbody>
             <tr>
-              <td>Lap {!lapTimes.length ? 1 : lapTimes.length}</td>
-              <td>{convertTimeToString(timer.currentLapTime)}</td>
+              <td>Lap {!lapTimes.length ? 1 : lapTimes.length + 1}</td>
+              <td>{printTime(timer.currentLapTime)}</td>
             </tr>
+            <LapRow lapTimes={lapTimes}/>
           </tbody>
         </table>
       </div>
@@ -128,8 +120,6 @@ export default App;
 //     setTimer({ ...timer, startTime: timer.startTime + timer.totalTime });
 // }
 
-
-
 // useEffect(() => {
 //   if (isRunning) {
 //     const lapTimer = setInterval(() => {
@@ -140,3 +130,8 @@ export default App;
 //     };
 //   }
 // }, [timer.currentLapTime]);
+
+// setTimer({
+//   ...timer,
+//   pauseTime: Date.now(),
+// });
