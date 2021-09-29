@@ -1,29 +1,40 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import {printTime, timeElapsed} from "./utils/printTime";
-import LapRow  from './components/LapRow'
+import { printTime, timeElapsed } from "./utils/printTime";
+import { indexOfMinMax } from "./utils/findMinMax";
+import LapRow from "./components/LapRow";
 import LapTimer from "./components/LapTimer";
 
-function App() {
-  
+function StopWatch() {
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [lapTimes, setLapTimes] = useState([]);
-
+  const [minMaxIndex, setMinMaxIndex] = useState({
+    minIndex: 0,
+    maxIndex: 0,
+  });
   const [timer, setTimer] = useState({
     startTime: 0,
     totalTime: 0,
     currentLapStart: 0,
-    currentLapTime: 0
+    currentLapTime: 0,
   });
 
   const start = () => {
     setIsRunning(true);
     if (isPaused) {
-      setTimer({ ...timer, startTime: Date.now() - timer.totalTime, currentLapStart: Date.now() - timer.currentLapTime});
+      setTimer({
+        ...timer,
+        startTime: Date.now() - timer.totalTime,
+        currentLapStart: Date.now() - timer.currentLapTime,
+      });
       setIsPaused(false);
     } else {
-      setTimer({ ...timer, startTime: Date.now(), currentLapStart: Date.now()});
+      setTimer({
+        ...timer,
+        startTime: Date.now(),
+        currentLapStart: Date.now(),
+      });
     }
   };
 
@@ -39,21 +50,27 @@ function App() {
       startTime: 0,
       totalTime: 0,
       currentLapStart: 0,
-      currentLapTime: 0
+      currentLapTime: 0,
     });
     const emptyLapsArray = [];
-    setLapTimes(emptyLapsArray) 
+    setLapTimes(emptyLapsArray);
   };
 
   const lap = () => {
     if (isRunning) {
       const currentLap = timer.currentLapTime;
       const newLapTimes = lapTimes;
-      newLapTimes.unshift(currentLap)
-      setLapTimes([...newLapTimes])
-      setTimer((prevState) => ({ ...prevState, currentLapStart: Date.now(), currentLapTime: 0 }))
-      
-    }  
+      newLapTimes.unshift(currentLap);
+      setLapTimes([...newLapTimes]);
+      setTimer((prevState) => ({
+        ...prevState,
+        currentLapStart: Date.now(),
+        currentLapTime: 0,
+      }));
+      if (lapTimes.length > 1) {
+        setMinMaxIndex(indexOfMinMax(lapTimes));
+      }
+    }
   };
 
   useEffect(() => {
@@ -102,8 +119,13 @@ function App() {
       <div className="bottom">
         <table>
           <tbody>
-            {timer.startTime ? <LapTimer timer={timer} lapTimes={lapTimes}/>: null}
-            <LapRow lapTimes={lapTimes}/>
+            {timer.startTime ? (
+              <LapTimer
+                lapTime={timer.currentLapTime}
+                lapNumber={lapTimes.length}
+              />
+            ) : null}
+            <LapRow lapTimes={lapTimes} minMaxIndex={minMaxIndex} />
           </tbody>
         </table>
       </div>
@@ -111,9 +133,7 @@ function App() {
   );
 }
 
-export default App;
-
-
+export default StopWatch;
 
 // if (isPaused) {
 //   const resumeTimer = () =>

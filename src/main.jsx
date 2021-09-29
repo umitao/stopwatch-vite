@@ -1,11 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import './index.css'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import StopWatch from "./StopWatch";
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <StopWatch />
   </React.StrictMode>,
-  document.getElementById('root')
-)
+  document.getElementById("root")
+);

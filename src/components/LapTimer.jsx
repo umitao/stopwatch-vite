@@ -1,12 +1,11 @@
-import React from 'react'
-import { printTime } from '../utils/printTime'
+import React from "react";
+import { printTime } from "../utils/printTime";
 
-export default function LapTimer({timer, lapTimes}) {
-
+export default function LapTimer({ lapTime, lapNumber }) {
   return (
     <tr>
-      <td>Lap {!lapTimes.length ? 1 : lapTimes.length + 1}</td>
-      <td>{printTime(timer.currentLapTime)}</td>
+      <td>Lap {!lapNumber ? 1 : lapNumber + 1}</td>
+      <td>{printTime(lapTime)}</td>
     </tr>
-  )
+  );
 }
