@@ -76,7 +76,6 @@ button.lap {
 }
 
 button.reset {
-  /* display: none; */
   width: 60px;
   height: 60px;
   margin: 50px 100px 10px 0;
@@ -97,10 +96,23 @@ div.digits > p {
 }
 
 div.bottom {
-  width: 375px;
+  width: 370px;
   height: 266px;
-  overflow: auto;
+  overflow: hidden auto;
   font-size: 1.3em;
+}
+
+.bottom::-webkit-scrollbar {
+  width: 3px;
+}
+
+.bottom::-webkit-scrollbar-thumb {
+  background-color: var(--lap-inactive-text-color);
+  border-radius: 15px;
+}
+
+.bottom::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 table {
@@ -116,11 +128,10 @@ tbody {
   display: table;
   width: 90%;
   padding-top: 10px;
-  /* border: 2px solid #fff; */
 }
 
 tr {
-  border-bottom: 1px solid var(--lap-active-button-color);
+  border-top: 1px solid var(--lap-active-button-color);
 }
 
 td:first-child {

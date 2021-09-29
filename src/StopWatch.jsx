@@ -4,6 +4,7 @@ import { printTime, timeElapsed } from "./utils/printTime";
 import { indexOfMinMax } from "./utils/findMinMax";
 import LapRow from "./components/LapRow";
 import LapTimer from "./components/LapTimer";
+import { EmptyRows } from "./components/EmptyRows";
 
 function StopWatch() {
   const [isRunning, setIsRunning] = useState(false);
@@ -52,8 +53,8 @@ function StopWatch() {
       currentLapStart: 0,
       currentLapTime: 0,
     });
-    const emptyLapsArray = [];
-    setLapTimes(emptyLapsArray);
+    setLapTimes([]);
+    setMinMaxIndex((prevState) => ({ ...prevState, minIndex: 0, maxIndex: 0 }));
   };
 
   const lap = () => {
@@ -126,6 +127,7 @@ function StopWatch() {
               />
             ) : null}
             <LapRow lapTimes={lapTimes} minMaxIndex={minMaxIndex} />
+            <EmptyRows lapsLength={lapTimes.length} />
           </tbody>
         </table>
       </div>
@@ -134,24 +136,3 @@ function StopWatch() {
 }
 
 export default StopWatch;
-
-// if (isPaused) {
-//   const resumeTimer = () =>
-//     setTimer({ ...timer, startTime: timer.startTime + timer.totalTime });
-// }
-
-// useEffect(() => {
-//   if (isRunning) {
-//     const lapTimer = setInterval(() => {
-//       setTimer({ ...timer, currentLapTime: timeElapsed(timer.startTime) });
-//     });
-//     return () => {
-//       clearInterval(lapTimer);
-//     };
-//   }
-// }, [timer.currentLapTime]);
-
-// setTimer({
-//   ...timer,
-//   pauseTime: Date.now(),
-// });
