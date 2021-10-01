@@ -22,19 +22,11 @@ function StopWatch() {
 
   const start = () => {
     setIsRunning(true);
-    if (!isRunning) {
-      setTimer({
-        ...timer,
-        startTime: Date.now() - timer.totalTime,
-        currentLapStart: Date.now() - timer.currentLapTime,
-      });
-    } else {
-      setTimer({
-        ...timer,
-        startTime: Date.now(),
-        currentLapStart: Date.now(),
-      });
-    }
+    setTimer({
+      ...timer,
+      startTime: Date.now() - timer.totalTime,
+      currentLapStart: Date.now() - timer.currentLapTime,
+    });
   };
 
   const stop = () => setIsRunning(false);
@@ -52,16 +44,17 @@ function StopWatch() {
   };
 
   const lap = () => {
+    //saveLap
     if (isRunning) {
       const currentLap = timer.currentLapTime;
       const newLapTimes = lapTimes;
       newLapTimes.unshift(currentLap);
-      setLapTimes([...newLapTimes]);
       setTimer((prevState) => ({
         ...prevState,
         currentLapStart: Date.now(),
         currentLapTime: 0,
       }));
+      console.log(...lapTimes);
       if (lapTimes.length > 1) {
         setMinMaxIndex(indexOfMinMax(lapTimes));
       }
@@ -76,7 +69,7 @@ function StopWatch() {
           totalTime: timeElapsed(prevState.startTime),
           currentLapTime: timeElapsed(prevState.currentLapStart),
         }));
-      }, 16.6);
+      }, 16);
 
       return () => {
         clearInterval(timerID);
@@ -92,6 +85,7 @@ function StopWatch() {
         </div>
         <div className="buttons">
           {!isRunning && timer.startTime ? (
+            //prettier config parens
             <button className="reset" onClick={reset}>
               Reset
             </button>

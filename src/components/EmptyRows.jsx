@@ -1,9 +1,9 @@
 import React from "react";
 
 export default function EmptyRows({ lapsLength }) {
-  const emptyRowsNumber = 7 - lapsLength;
-  if (emptyRowsNumber > 0) {
-    const emptyRows = new Array(emptyRowsNumber).fill("").map((_, i) => (
+  const emptyRowsCount = 8 - lapsLength;
+  if (emptyRowsCount > 0) {
+    const emptyRows = new Array(emptyRowsCount).fill("").map((_, i) => (
       <tr key={i}>
         <td> </td>
         <td> </td>

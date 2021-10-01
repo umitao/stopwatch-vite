@@ -121,6 +121,7 @@ table {
   font-size: 1.3em;
   font-variant-numeric: tabular-nums;
   border-collapse: collapse;
+  border-spacing: 0;
 }
 
 tbody {
@@ -128,6 +129,7 @@ tbody {
   display: table;
   width: 90%;
   padding-top: 10px;
+  /* border-top: 3px solid var(--lap-active-button-color); */
 }
 
 tr {
@@ -144,7 +146,7 @@ td:last-child {
 
 td,
 th {
-  height: 20px;
+  height: 15px;
   padding: 10px 10px;
 }
 
