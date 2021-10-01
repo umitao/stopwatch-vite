@@ -98,7 +98,7 @@ div.digits > p {
 div.bottom {
   width: 370px;
   height: 266px;
-  overflow: hidden auto;
+  overflow: hidden scroll;
   font-size: 1.3em;
 }
 

@@ -1,6 +1,6 @@
 import React from "react";
 
-export function EmptyRows({ lapsLength }) {
+export default function EmptyRows({ lapsLength }) {
   const emptyRowsNumber = 7 - lapsLength;
   if (emptyRowsNumber > 0) {
     const emptyRows = new Array(emptyRowsNumber).fill("").map((_, i) => (

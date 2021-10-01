@@ -4,32 +4,30 @@ import { printTime, timeElapsed } from "./utils/printTime";
 import { indexOfMinMax } from "./utils/findMinMax";
 import LapRow from "./components/LapRow";
 import LapTimer from "./components/LapTimer";
-import { EmptyRows } from "./components/EmptyRows";
+import EmptyRows from "./components/EmptyRows";
 
 function StopWatch() {
   const [isRunning, setIsRunning] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [lapTimes, setLapTimes] = useState([]);
-  const [minMaxIndex, setMinMaxIndex] = useState({
-    minIndex: 0,
-    maxIndex: 0,
-  });
   const [timer, setTimer] = useState({
     startTime: 0,
     totalTime: 0,
     currentLapStart: 0,
     currentLapTime: 0,
   });
+  const [lapTimes, setLapTimes] = useState([]);
+  const [minMaxIndex, setMinMaxIndex] = useState({
+    minIndex: 0,
+    maxIndex: 0,
+  });
 
   const start = () => {
     setIsRunning(true);
-    if (isPaused) {
+    if (!isRunning) {
       setTimer({
         ...timer,
         startTime: Date.now() - timer.totalTime,
         currentLapStart: Date.now() - timer.currentLapTime,
       });
-      setIsPaused(false);
     } else {
       setTimer({
         ...timer,
@@ -39,13 +37,9 @@ function StopWatch() {
     }
   };
 
-  const stop = () => {
-    setIsRunning(false);
-    setIsPaused(true);
-  };
+  const stop = () => setIsRunning(false);
 
   const reset = () => {
-    setIsPaused(false);
     setTimer({
       ...timer,
       startTime: 0,
@@ -97,7 +91,7 @@ function StopWatch() {
           <p>{printTime(timer.totalTime)}</p>
         </div>
         <div className="buttons">
-          {isPaused ? (
+          {!isRunning && timer.startTime ? (
             <button className="reset" onClick={reset}>
               Reset
             </button>
@@ -136,3 +130,12 @@ function StopWatch() {
 }
 
 export default StopWatch;
+
+// <Button
+//           isRunning={isRunning}
+//           classes={lapResetClasses}
+//           buttonFunction={lapResetFn}
+//         />
+// const startOrStop = !isRunning ?
+// const lapResetClasses = !isRunning && timer.startTime ? "reset" : "lap";
+// const lapResetFn = isRunning ? lap : reset;
