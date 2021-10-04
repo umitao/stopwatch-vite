@@ -1,12 +1,10 @@
 export const indexOfMinMax = (lapTimes) => {
-  if (lapTimes.length > 1) {
-    const min = Math.min(...lapTimes);
-    const max = Math.max(...lapTimes);
+  const min = Math.min(...lapTimes);
+  const max = Math.max(...lapTimes);
 
-    const indexMin = lapTimes.indexOf(min);
-    const indexMax = lapTimes.indexOf(max);
-    return { minIndex: indexMin, maxIndex: indexMax };
-  }
+  const indexMin = lapTimes.indexOf(min);
+  const indexMax = lapTimes.indexOf(max);
+  return { minIndex: indexMin, maxIndex: indexMax };
 };
 
 export const markMinMax = (minMaxIndex, index) => {

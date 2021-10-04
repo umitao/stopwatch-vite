@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useEffect, useReducer } from "react";
-import { printTime, timeElapsed } from "./utils/printTime";
+import { printTime } from "./utils/printTime";
 import { indexOfMinMax } from "./utils/findMinMax";
 import LapRow from "./components/LapRow";
 import LapTimer from "./components/LapTimer";
@@ -8,19 +8,21 @@ import EmptyRows from "./components/EmptyRows";
 import { timerReducer, TimerActions, initialTimer } from "./timerReducer";
 
 function StopWatch() {
-  const [state, dispatch] = useReducer(timerReducer, initialTimer);
+  const [timer, dispatch] = useReducer(timerReducer, initialTimer);
 
   const start = () => dispatch({ type: TimerActions.START });
   const stop = () => dispatch({ type: TimerActions.STOP });
   const reset = () => dispatch({ type: TimerActions.RESET });
   const lap = () => {
-    if (state.isRunning) {
-      dispatch({ type: TimerActions.SAVE_LAP });
+    if (timer.isRunning) {
+      dispatch({
+        type: TimerActions.SAVE_LAP,
+      });
     }
   };
 
   useEffect(() => {
-    if (state.isRunning) {
+    if (timer.isRunning) {
       const timerID = setInterval(
         () =>
           dispatch({
@@ -33,47 +35,42 @@ function StopWatch() {
         clearInterval(timerID);
       };
     }
-  }, [state.isRunning]);
+  }, [timer.isRunning]);
+
+  const startStopClasses = !timer.isRunning ? "start" : "stop";
+  const startStopHandler = !timer.isRunning ? start : stop;
+  const startStopLabel = !timer.isRunning ? "Start" : "Stop";
+
+  const lapResetClasses = timer.startTime ? "reset" : "lap";
+  const lapResetHandler = !timer.isRunning && timer.startTime ? reset : lap;
+  const lapResetLabel = !timer.isRunning && timer.startTime ? "Reset" : "Lap";
 
   return (
     <div className="App">
       <div className="top">
         <div className="digits">
-          <p>{printTime(state.totalTime)}</p>
+          <p>{printTime(timer.totalTime)}</p>
         </div>
         <div className="buttons">
-          {!state.isRunning && state.startTime ? (
-            //prettier config parens
-            <button className="reset" onClick={reset}>
-              Reset
-            </button>
-          ) : (
-            <button className="lap" onClick={lap}>
-              Lap
-            </button>
-          )}
-          {!state.isRunning ? (
-            <button className="start" onClick={start}>
-              Start
-            </button>
-          ) : (
-            <button className="stop" onClick={stop}>
-              Stop
-            </button>
-          )}
+          <button className={lapResetClasses} onClick={lapResetHandler}>
+            {lapResetLabel}
+          </button>
+          <button className={startStopClasses} onClick={startStopHandler}>
+            {startStopLabel}
+          </button>
         </div>
       </div>
       <div className="bottom">
         <table>
           <tbody>
-            {state.startTime ? (
+            {timer.startTime ? (
               <LapTimer
-                lapTime={state.currentLapTime}
-                lapNumber={state.lapTimes.length}
+                lapTime={timer.currentLapTime}
+                lapNumber={timer.lapTimes.length}
               />
             ) : null}
-            <LapRow timerState={state} />
-            <EmptyRows lapsLength={state.lapTimes.length} />
+            <LapRow timerState={timer} />
+            <EmptyRows lapsLength={timer.lapTimes.length} />
           </tbody>
         </table>
       </div>
@@ -82,7 +79,3 @@ function StopWatch() {
 }
 
 export default StopWatch;
-
-// if (state.lapTimes.length > 1) {
-//   setMinMaxIndex(indexOfMinMax(state.lapTimes));
-// }
