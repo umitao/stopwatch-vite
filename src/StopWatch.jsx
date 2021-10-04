@@ -1,7 +1,6 @@
 import "./App.css";
 import React, { useEffect, useReducer } from "react";
 import { printTime } from "./utils/printTime";
-import { indexOfMinMax } from "./utils/findMinMax";
 import LapRow from "./components/LapRow";
 import LapTimer from "./components/LapTimer";
 import EmptyRows from "./components/EmptyRows";
@@ -37,6 +36,7 @@ function StopWatch() {
     }
   }, [timer.isRunning]);
 
+  //to be removed via direct ref and conditions to dispatches in a var
   const startStopClasses = !timer.isRunning ? "start" : "stop";
   const startStopHandler = !timer.isRunning ? start : stop;
   const startStopLabel = !timer.isRunning ? "Start" : "Stop";

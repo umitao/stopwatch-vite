@@ -7,10 +7,11 @@ const LapRow = ({ timerState }) => (
     {timerState.lapTimes.map((lapTime, index) => {
       const newIndex = indexOfMinMax(timerState.lapTimes);
       const bestWorstLap = markMinMax(newIndex, index);
+      const lapNumber = timerState.lapTimes.length - index;
 
       return (
-        <tr key={timerState.lapTimes.length - index} className={bestWorstLap}>
-          <td>{`Lap ${timerState.lapTimes.length - index}`}</td>
+        <tr key={lapNumber} className={bestWorstLap}>
+          <td>{`Lap ${lapNumber}`}</td>
           <td>{printTime(lapTime)}</td>
         </tr>
       );
