@@ -4,6 +4,7 @@ export const indexOfMinMax = (lapTimes) => {
 
   const indexMin = lapTimes.indexOf(min);
   const indexMax = lapTimes.indexOf(max);
+
   return { minIndex: indexMin, maxIndex: indexMax };
 };
 

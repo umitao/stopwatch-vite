@@ -12,7 +12,7 @@ function StopWatch() {
   const start = () => dispatch({ type: TimerActions.START });
   const stop = () => dispatch({ type: TimerActions.STOP });
   const reset = () => dispatch({ type: TimerActions.RESET });
-  const lap = () => {
+  const saveLap = () => {
     if (timer.isRunning) {
       dispatch({
         type: TimerActions.SAVE_LAP,
@@ -41,8 +41,8 @@ function StopWatch() {
   const startStopHandler = !timer.isRunning ? start : stop;
   const startStopLabel = !timer.isRunning ? "Start" : "Stop";
 
-  const lapResetClasses = timer.startTime ? "reset" : "lap";
-  const lapResetHandler = !timer.isRunning && timer.startTime ? reset : lap;
+  const lapResetClasses = !timer.isRunning && timer.startTime ? "reset" : "lap";
+  const lapResetHandler = !timer.isRunning && timer.startTime ? reset : saveLap;
   const lapResetLabel = !timer.isRunning && timer.startTime ? "Reset" : "Lap";
 
   return (
