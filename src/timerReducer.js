@@ -1,5 +1,4 @@
 import { timeElapsed } from "./utils/printTime";
-import { indexOfMinMax } from "./utils/findMinMax";
 
 export const initialTimer = {
   isRunning: false,
@@ -7,8 +6,6 @@ export const initialTimer = {
   totalTime: 0,
   currentLapStart: 0,
   currentLapTime: 0,
-  minIndex: 0,
-  maxIndex: 0,
   lapTimes: [],
 };
 
@@ -40,13 +37,11 @@ export function timerReducer(state, action) {
     case "RESET":
       return initialTimer;
     case "SAVE_LAP":
-      const newIndex = indexOfMinMax(state.lapTimes);
       return {
         ...state,
         lapTimes: [state.currentLapTime, ...state.lapTimes],
         currentLapStart: Date.now(),
         currentLapTime: 0,
-        ...newIndex,
       };
     default:
       throw new Error();
