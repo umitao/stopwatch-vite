@@ -19,16 +19,11 @@ function StopWatch() {
       });
     }
   };
+  const runTimer = () => dispatch({ type: TimerActions.RUN });
 
   useEffect(() => {
     if (timer.isRunning) {
-      const timerID = setInterval(
-        () =>
-          dispatch({
-            type: TimerActions.RUN,
-          }),
-        16
-      );
+      const timerID = setInterval(runTimer, 16);
 
       return () => {
         clearInterval(timerID);
@@ -36,7 +31,6 @@ function StopWatch() {
     }
   }, [timer.isRunning]);
 
-  //to be removed via direct ref and conditions to dispatches in a var
   const startStopClasses = !timer.isRunning ? "start" : "stop";
   const startStopHandler = !timer.isRunning ? start : stop;
   const startStopLabel = !timer.isRunning ? "Start" : "Stop";
