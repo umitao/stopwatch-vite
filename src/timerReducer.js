@@ -19,24 +19,24 @@ export const TimerActions = {
 
 export function timerReducer(state, action) {
   switch (action.type) {
-    case "RUN":
+    case TimerActions.RUN:
       return {
         ...state,
         totalTime: timeElapsed(state.startTime),
         currentLapTime: timeElapsed(state.currentLapStart),
       };
-    case "START":
+    case TimerActions.START:
       return {
         ...state,
         isRunning: !state.isRunning,
         startTime: Date.now() - state.totalTime,
         currentLapStart: Date.now() - state.currentLapTime,
       };
-    case "STOP":
+    case TimerActions.STOP:
       return { ...state, isRunning: !state.isRunning };
-    case "RESET":
+    case TimerActions.RESET:
       return initialTimer;
-    case "SAVE_LAP":
+    case TimerActions.SAVE_LAP:
       return {
         ...state,
         lapTimes: [state.currentLapTime, ...state.lapTimes],
@@ -44,6 +44,6 @@ export function timerReducer(state, action) {
         currentLapTime: 0,
       };
     default:
-      throw new Error();
+      throw new Error("Unrecognized action");
   }
 }

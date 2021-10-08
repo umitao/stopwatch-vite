@@ -12,13 +12,7 @@ function StopWatch() {
   const start = () => dispatch({ type: TimerActions.START });
   const stop = () => dispatch({ type: TimerActions.STOP });
   const reset = () => dispatch({ type: TimerActions.RESET });
-  const saveLap = () => {
-    if (timer.isRunning) {
-      dispatch({
-        type: TimerActions.SAVE_LAP,
-      });
-    }
-  };
+  const saveLap = () => dispatch({ type: TimerActions.SAVE_LAP });
   const runTimer = () => dispatch({ type: TimerActions.RUN });
 
   useEffect(() => {
@@ -46,7 +40,11 @@ function StopWatch() {
           <p>{printTime(timer.totalTime)}</p>
         </div>
         <div className="buttons">
-          <button className={lapResetClasses} onClick={lapResetHandler}>
+          <button
+            className={lapResetClasses}
+            onClick={lapResetHandler}
+            disabled={timer.startTime ? false : true}
+          >
             {lapResetLabel}
           </button>
           <button className={startStopClasses} onClick={startStopHandler}>
