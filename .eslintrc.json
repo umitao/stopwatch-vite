@@ -8,6 +8,7 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended"
   ],
+  "ignorePatterns": ["./src/assets/fonts/*.otf"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -22,7 +23,7 @@
     }
   },
   "rules": {
-    "react/prop-types": ["off"],
+    "react/prop-types": 0,
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   }
