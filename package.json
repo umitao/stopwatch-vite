@@ -10,7 +10,7 @@
     "prepare": "husky install"
   },
   "type": "module",
-  "pre-commit": [
+  "pre-push": [
     "test"
   ],
   "dependencies": {
@@ -39,9 +39,14 @@
     "jest-circus": "^27.2.5",
     "jest-cli": "^27.2.5",
     "jest-watch-typeahead": "^1.0.0",
+    "lint-staged": "^11.2.3",
     "pre-commit": "^1.2.2",
     "prettier": "^2.4.1",
     "react-test-renderer": "^17.0.2",
     "vite": "^2.5.4"
+  },
+  "lint-staged": {
+    "*.{jsx,js}": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
   }
 }
